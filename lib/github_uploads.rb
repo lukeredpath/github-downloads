@@ -60,14 +60,6 @@ module GithubUploads
       end
     end
     
-    def delete
-      if params[:name].nil?
-        fail! "* The name of the file to delete must be specified (-n or --name)"
-      end
-      
-      
-    end
-    
     private
     
     def fail!(message, status = 1)
