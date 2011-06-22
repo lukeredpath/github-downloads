@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'github'
+require 'github/client'
 
 class FakeResource # fake RestClient::Resource
   attr_reader :path
