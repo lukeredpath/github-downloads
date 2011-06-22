@@ -11,3 +11,13 @@ Rspec.configure do |config|
   config.color_enabled = true
   config.mock_with :mocha
 end
+
+USE_CHARLES_PROXY = true
+
+def mimic_port
+  if USE_CHARLES_PROXY
+    11989
+  else
+    Mimic::MIMIC_DEFAULT_PORT
+  end
+end

@@ -142,3 +142,33 @@ describe "Github::Client::Response" do
   end
   
 end
+
+describe "Github::Client authentication" do
+  
+  before :each do
+    @client = Github::Client.connect("http://localhost:#{mimic_port}")
+  end
+  
+  context "with basic auth" do
+    before :each do
+      Mimic.mimic do
+        use Rack::Auth::Basic do |user, pass|
+          user == "joebloggs" and pass == "letmein"
+        end
+  
+        get("/some/path") { [200, {}, ""] }
+      end
+    end
+    
+    it "should succeed when authenticated correctly" do
+      @client.authenticate_using_basic("joebloggs", "letmein")
+      @client.get("/some/path").should be_success
+    end
+    
+    it "should fail when not authenticated correctly" do
+      @client.authenticate_using_basic("joebloggs", "wrongpass")
+      @client.get("/some/path").should be_error
+    end
+  end
+  
+end
