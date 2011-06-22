@@ -15,7 +15,7 @@ Rspec.configure do |config|
   end
 end
 
-USE_CHARLES_PROXY = false
+USE_CHARLES_PROXY = true
 
 def mimic_port
   if USE_CHARLES_PROXY

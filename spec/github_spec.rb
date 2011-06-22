@@ -85,11 +85,7 @@ end
 describe "Github::Client::Response" do
     
   before :each do
-    @client = Github::Client.connect("http://localhost:#{Mimic::MIMIC_DEFAULT_PORT}")
-  end
-  
-  after :each do |variable|
-    Mimic.cleanup!
+    @client = Github::Client.connect("http://localhost:#{mimic_port}")
   end
   
   def response
@@ -177,6 +173,15 @@ describe "Github::Client::Response" do
     end
   end
   
+  context "for a server error" do
+    before :each do
+      Mimic.mimic.get("/some/path").returning("", 500)
+    end
+    
+    it "raises an exception" do
+      proc{ @client.get("/some/path") }.should raise_error
+    end
+  end  
 end
 
 describe "Github::Client authentication" do
@@ -184,7 +189,7 @@ describe "Github::Client authentication" do
   before :each do
     @client = Github::Client.connect("http://localhost:#{mimic_port}")
   end
-  
+    
   context "with basic auth" do
     before :each do
       Mimic.mimic do

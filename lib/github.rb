@@ -56,12 +56,23 @@ module Github
         Response.new(@resource[path].send(method))
       end
     rescue RestClient::Exception => e
-      Response.new(e.response)
+      if Response.can_handle?(e.response)
+        Response.new(e.response)
+      else
+        raise e
+      end
     end
     
     class Response
+      SUCCESS_CODES = [200, 201]
+      FAILURE_CODES = [400, 401, 422]
+      
       def initialize(response)
         @response = response
+      end
+      
+      def self.can_handle?(response)
+        (SUCCESS_CODES + FAILURE_CODES).include?(response.code)
       end
       
       def to_s
@@ -69,11 +80,11 @@ module Github
       end
       
       def success?
-        when_statuses_are 200, 201
+        when_statuses_are *SUCCESS_CODES
       end
       
       def error?
-        when_statuses_are 400, 401, 422
+        when_statuses_are *FAILURE_CODES
       end
       
       def error_message
