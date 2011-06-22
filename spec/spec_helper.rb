@@ -10,6 +10,9 @@ $:.unshift(File.join(File.dirname(__FILE__), *%w[.. lib]))
 Rspec.configure do |config|
   config.color_enabled = true
   config.mock_with :mocha
+  config.before(:each) do
+    Mimic.cleanup!
+  end
 end
 
 USE_CHARLES_PROXY = false
