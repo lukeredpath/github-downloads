@@ -44,6 +44,42 @@ describe "Github::Client" do
     end
   end
   
+  describe "#put" do
+    it "performs a PUT request with the supplied data in JSON format to /some/path on the resource" do
+      @resource.expects(:put).with({"foo" => "bar"}.to_json).when @resource.path.is("/some/path")
+      @client.put("/some/path", {"foo" => "bar"})
+    end
+    
+    it "returns a Github::Client::Response" do
+      @resource.stubs(:put)
+      @client.put("/some/path", nil).should be_instance_of(Github::Client::Response)
+    end
+  end
+  
+  describe "#delete" do
+    it "performs a DELETE request to /some/path on the resource" do
+      @resource.expects(:delete).when @resource.path.is("/some/path")
+      @client.delete("/some/path")
+    end
+    
+    it "returns a Github::Client::Response" do
+      @resource.stubs(:delete)
+      @client.delete("/some/path").should be_instance_of(Github::Client::Response)
+    end
+  end
+  
+  describe "#head" do
+    it "performs a HEAD request to /some/path on the resource" do
+      @resource.expects(:head).when @resource.path.is("/some/path")
+      @client.head("/some/path")
+    end
+    
+    it "returns a Github::Client::Response" do
+      @resource.stubs(:head)
+      @client.head("/some/path").should be_instance_of(Github::Client::Response)
+    end
+  end
+  
 end
 
 describe "Github::Client::Response" do
@@ -60,7 +96,7 @@ describe "Github::Client::Response" do
     @client.get("/some/path")
   end
   
-  def post_response(data = nil)
+  def post_response(data = "")
     @client.post("/some/path", data)
   end
   

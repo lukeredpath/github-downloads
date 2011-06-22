@@ -12,7 +12,7 @@ Rspec.configure do |config|
   config.mock_with :mocha
 end
 
-USE_CHARLES_PROXY = true
+USE_CHARLES_PROXY = false
 
 def mimic_port
   if USE_CHARLES_PROXY

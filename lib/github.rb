@@ -28,13 +28,33 @@ module Github
     end
     
     def get(path)
-      Response.new(@resource[path].get)
-    rescue RestClient::Exception => e
-      Response.new(e.response)
+      request :get, path
     end
     
     def post(path, data)
-      Response.new(@resource[path].post(data.to_json))
+      request :post, path, data
+    end
+    
+    def put(path, data)
+      request :put, path, data
+    end
+    
+    def delete(path)
+      request :delete, path
+    end
+    
+    def head(path)
+      request :head, path
+    end
+    
+    private
+    
+    def request(method, path, data = nil)
+      if data
+        Response.new(@resource[path].send(method, data.to_json))
+      else
+        Response.new(@resource[path].send(method))
+      end
     rescue RestClient::Exception => e
       Response.new(e.response)
     end
