@@ -6,6 +6,7 @@ GEM
     hirb (0.4.5)
     json (1.5.3)
     mime-types (1.16)
+    mimetype-fu (0.1.2)
     mimic (0.4.1)
       json
       plist
@@ -39,6 +40,7 @@ DEPENDENCIES
   awesome_print
   hirb
   json
+  mimetype-fu
   mimic
   mocha
   rest-client
