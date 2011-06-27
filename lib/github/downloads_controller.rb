@@ -1,16 +1,13 @@
 require 'simpleconsole'
-require 'json'
 require 'hirb'
 require 'highline/import'
 require 'osx_keychain'
 
-$:.unshift File.dirname(__FILE__)
-
 require 'github/downloads'
 require 'github/s3_uploader'
 
-module GithubUploads
-  class Manager < SimpleConsole::Controller
+module Github
+  class DownloadsController < SimpleConsole::Controller
     include Hirb::Console
     
     params :string => { 

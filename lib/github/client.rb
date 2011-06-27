@@ -1,5 +1,6 @@
 require 'restclient'
 require 'ostruct'
+require 'json'
 
 module Github
   class Client

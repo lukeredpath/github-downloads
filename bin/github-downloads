@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require 'simpleconsole'
+require File.join(File.dirname(__FILE__), *%w[.. lib github])
+
+SimpleConsole::Application.run(ARGV, Github::DownloadsController)
