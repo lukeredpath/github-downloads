@@ -21,10 +21,10 @@ spec = Gem::Specification.new do |s|
   # Change these as appropriate
   s.name              = "github-downloads"
   s.version           = "0.1.0"
-  s.summary           = "What this thing does"
+  s.summary           = "Manages downloads for your Github projects"
   s.author            = "Luke Redpath"
   s.email             = "luke@lukeredpath.co.uk"
-  s.homepage          = "http://yoursite.example.com"
+  s.homepage          = "http://lukeredpath.co.uk"
 
   s.has_rdoc          = true
   s.extra_rdoc_files  = %w(README)
