@@ -4,7 +4,8 @@ gem "rest-client"
 gem "json"
 gem "simpleconsole"
 gem "hirb"
-gem "mimetype-fu"
+gem "mime-types"
+gem "highline"
 
 group :test do
   gem "mocha"

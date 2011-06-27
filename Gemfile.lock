@@ -3,10 +3,10 @@ GEM
   specs:
     awesome_print (0.3.1)
     diff-lcs (1.1.2)
+    highline (1.6.2)
     hirb (0.4.5)
     json (1.5.3)
     mime-types (1.16)
-    mimetype-fu (0.1.2)
     mimic (0.4.1)
       json
       plist
@@ -38,9 +38,10 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  highline
   hirb
   json
-  mimetype-fu
+  mime-types
   mimic
   mocha
   rest-client

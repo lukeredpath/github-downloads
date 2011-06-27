@@ -2,6 +2,7 @@ require 'ostruct'
 require 'mime/types'
 require 'github/client'
 
+RestClient.log = STDOUT
 
 module Github
   class Downloads

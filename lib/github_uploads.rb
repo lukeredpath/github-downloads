@@ -1,18 +1,23 @@
-require 'restclient'
 require 'simpleconsole'
 require 'json'
 require 'hirb'
+require 'highline/import'
+require 'osx_keychain'
+
+$:.unshift File.dirname(__FILE__)
+
+require 'github/downloads'
+require 'github/s3_uploader'
 
 module GithubUploads
   class Manager < SimpleConsole::Controller
     include Hirb::Console
     
     params :string => { 
-      :l => :login, 
-      :t => :token, 
+      :u => :user, 
       :f => :file, 
       :n => :name, 
-      :r => :repo,
+      :r => :repos,
       :d => :description,
       :p => :proxy
     }, 
@@ -20,7 +25,7 @@ module GithubUploads
       :o => :overwrite
     }
         
-    before_filter :set_authentication_params
+    before_filter :set_proxy
     
     def default
       puts "Valid actions: list, upload, delete"
@@ -28,59 +33,80 @@ module GithubUploads
     end
     
     def list
-      if params[:repo].nil?
-        fail! "* Please specify a repository (-r or --repo)"
+      if (downloads = github.list)
+        table downloads, {:fields => [:name, :description, :download_count]}
+      else
+        puts "Couldn't fetch downloads!"
       end
-
-      downloads = (fetch_downloads(params[:repo]) / "#manual_downloads li").map do |item|
-        Download.parse_html(item)
-      end
-
-      table downloads, {:fields => [:filename, :description, :size, :uploaded]}
+    rescue Github::Downloads::UnexpectedResponse => e
+      fail! "Unexpected response (#{e.response})."
     end
     
     def upload
       if params[:file].nil?
         fail! "* A file must be specified (-f or --file)"
       end
-      
-      if params[:repo].nil?
-        fail! "* A repository (e.g. username/reponame) must be specified (-r or --repo)"
-      end
-      
-      uploader = Uploader.new(@login, @token)
-      uploader.proxy = params[:proxy]
-      uploader.overwrite = params[:overwrite]
-      
-      if uploader.upload(params[:file], params[:repo], params[:description], params[:name])
-        puts "Upload successful!"
+
+      if (url_for_upload = github(:authenticated).upload(params[:file], params[:description]))
+        puts "Upload successful! (#{url_for_upload})"
       else
         fail! "Upload failed!"
       end
+    rescue Github::Downloads::UnexpectedResponse => e
+      fail! "Unexpected response (#{e.response})."
     end
     
     private
     
     def fail!(message, status = 1)
-      puts(message) && exit(status)
+      puts(message)
+      exit(status)
     end
     
     def fetch_downloads(repo)
        Hpricot(open("https://github.com/#{repo}/downloads"))
     end
     
-    def set_authentication_params
-      @login = params[:login] || `git config --global github.user`.strip 
-      @token = params[:token] || `git config --global github.token`.strip
-
-      unless @login && @token
-        puts "Github login and token must be set using either git config or by using command line options."
-        exit 1
+    def set_proxy
+      Github::Client.proxy = params[:proxy]
+    end
+    
+    def github(authentication_required = false)
+      if params[:repos].nil? || params[:user].nil?
+        fail! "* Please specify a user (-u or --user) and repository (-r or --repos)"
+      end
+      
+      if authentication_required
+        password = lookup_or_prompt_for_password(params[:user])
+      end
+      
+      @github ||= Github::Downloads.connect(params[:user], password, params[:repos]).tap do |gh|
+        gh.uploader = Github::S3Uploader.new
       end
     end
     
-    class GithubAPI
-
+    def lookup_or_prompt_for_password(user)
+      fetch_password_from_keychain(user) || prompt_for_password(user)
+    end
+    
+    def prompt_for_password(user)
+      ask("Enter Github password:") {|q| q.echo = false }.tap do |password|
+        store_password_in_keychain(user, password)
+      end
+    end
+    
+    def mac?
+      RUBY_PLATFORM.match(/darwin/)
+    end
+    
+    KEYCHAIN_SERVICE = "github-uploads"
+    
+    def fetch_password_from_keychain(user)
+      OSXKeychain.new[KEYCHAIN_SERVICE, user] if mac?
+    end
+    
+    def store_password_in_keychain(user, password)
+      OSXKeychain.new[KEYCHAIN_SERVICE, user] = password if mac?
     end
   end
 end
