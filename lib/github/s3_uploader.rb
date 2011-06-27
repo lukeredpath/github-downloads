@@ -3,7 +3,7 @@ require 'restclient'
 module Github
   class S3Uploader 
     def upload(path, metadata)
-      RestClient.post("http://github.s3.amazonaws.com/", [
+      RestClient.post(metadata["s3_url"], [
         ["key", "#{metadata["prefix"]}#{metadata["name"]}"],
         ["acl", metadata["acl"]],
         ["success_action_redirect", metadata["redirect"]],
