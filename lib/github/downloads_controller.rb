@@ -30,7 +30,7 @@ module Github
     end
     
     def list
-      if (downloads = github.list)
+      if (downloads = github(:authenticated).list)
         table downloads, {:fields => [:name, :description, :download_count]}
       else
         puts "Couldn't fetch downloads!"
