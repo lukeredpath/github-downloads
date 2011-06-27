@@ -4,8 +4,8 @@ require 'ostruct'
 module Github
   class Client
     class << self
-      def connect(base_url, options={})
-        new RestClient::Resource.new(base_url, options)
+      def connect(base_url, user = nil, pass = nil)
+        new RestClient::Resource.new(base_url, user, pass)
       end
       
       def proxy=(proxy_host)
@@ -15,16 +15,6 @@ module Github
     
     def initialize(resource)
       @resource = resource
-    end
-    
-    def authenticate_using_basic(username, password)
-      RestClient.add_before_execution_proc do |request, params|
-        request.basic_auth(username, password)
-      end
-    end
-    
-    def authenticate_using_oauth(oauth2_token)
-      raise "OAuth authentication is not implemented, sorry!" # TODO, MAYBE?
     end
     
     def get(path)
@@ -76,7 +66,7 @@ module Github
       end
       
       def to_s
-        "#{@response.description} | Rate limit: #{rate_limit_remaining} / #{rate_limit_remaining}"
+        "#{@response.description.strip} | Rate limit: #{rate_limit_remaining} / #{rate_limit_remaining}"
       end
       
       def success?

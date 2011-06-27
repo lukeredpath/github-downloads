@@ -1,14 +1,23 @@
 require 'ostruct'
-require 'mimetype_fu'
+require 'mime/types'
+require 'github/client'
+
 
 module Github
   class Downloads
     attr_accessor :uploader
     
+    GITHUB_BASE_URL = "https://api.github.com"
+    
     def initialize(client, user, repos)
       @client = client
       @user = user
       @repos = repos
+    end
+    
+    def self.connect(user, password, repos)
+      client = Client.connect(GITHUB_BASE_URL, user, password)
+      new(client, user, repos)
     end
     
     class UnexpectedResponse < StandardError
@@ -33,7 +42,7 @@ module Github
       response = @client.post(downloads_resource_path, {
         :name         => File.basename(file_path),
         :description  => description,
-        :content_type => File.mime_type?(file_path)
+        :content_type => MIME::Types.type_for(file_path)[0] || MIME::Types["application/octet-stream"][0]
       })
       
       if response.success?

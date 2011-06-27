@@ -185,10 +185,6 @@ describe "Github::Client::Response" do
 end
 
 describe "Github::Client authentication" do
-  
-  before :each do
-    @client = Github::Client.connect("http://localhost:#{mimic_port}")
-  end
     
   context "with basic auth" do
     before :each do
@@ -202,12 +198,12 @@ describe "Github::Client authentication" do
     end
     
     it "should succeed when authenticated correctly" do
-      @client.authenticate_using_basic("joebloggs", "letmein")
+      @client = Github::Client.connect("http://localhost:#{mimic_port}", "joebloggs", "letmein")
       @client.get("/some/path").should be_success
     end
     
     it "should fail when not authenticated correctly" do
-      @client.authenticate_using_basic("joebloggs", "wrongpass")
+      @client = Github::Client.connect("http://localhost:#{mimic_port}", "joebloggs", "wrongpass")
       @client.get("/some/path").should be_error
     end
   end
