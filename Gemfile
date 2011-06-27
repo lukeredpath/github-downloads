@@ -1,11 +1,6 @@
 source :rubyforge
 
-gem "rest-client"
-gem "json"
-gem "simpleconsole"
-gem "hirb"
-gem "mime-types"
-gem "highline"
+gemspec
 
 group :test do
   gem "mocha"
