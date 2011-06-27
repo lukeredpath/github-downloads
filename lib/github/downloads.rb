@@ -37,7 +37,7 @@ module Github
       end
     end
     
-    def upload(file_path, description = "")
+    def create(file_path, description = "")
       response = @client.post(downloads_resource_path, {
         :name         => File.basename(file_path),
         :description  => description,

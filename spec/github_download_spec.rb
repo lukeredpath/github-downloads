@@ -51,25 +51,25 @@ describe "Github::Downloads" do
         :size         => File.size?("fixtures/textfile.txt")
       }).returns(unsuccessful_response)
       
-      @downloads.upload("fixtures/textfile.txt", "an example file")
+      @downloads.create("fixtures/textfile.txt", "an example file")
     end
     
     it "passes the upload response data to the uploader if successful" do
       @client.stubs(:post).returns successful_response_with("upload data")
       @uploader.expects(:upload).with(File.expand_path("fixtures/textfile.txt"), "upload data")
-      @downloads.upload("fixtures/textfile.txt", "an example file")
+      @downloads.create("fixtures/textfile.txt", "an example file")
     end
     
     it "returns the URL returned by the uploader if successful" do
       @client.stubs(:post).returns successful_response_with("upload data")
       @uploader.stubs(:upload).returns("http://www.example.com/download")
-      @downloads.upload("fixtures/textfile.txt", "an example file").should == "http://www.example.com/download"
+      @downloads.create("fixtures/textfile.txt", "an example file").should == "http://www.example.com/download"
     end
     
     it "returns false without uploading anything when upload post fails" do
       @client.stubs(:post).returns unsuccessful_response
       @uploader.expects(:upload).never
-      @downloads.upload("fixtures/textfile.txt", "an example file").should be_false
+      @downloads.create("fixtures/textfile.txt", "an example file").should be_false
     end
     
   end

@@ -42,12 +42,12 @@ module GithubUploads
       fail! "Unexpected response (#{e.response})."
     end
     
-    def upload
+    def create
       if params[:file].nil?
         fail! "* A file must be specified (-f or --file)"
       end
 
-      if (url_for_upload = github(:authenticated).upload(params[:file], params[:description]))
+      if (url_for_upload = github(:authenticated).create(params[:file], params[:description]))
         puts "Upload successful! (#{url_for_upload})"
       else
         fail! "Upload failed!"
