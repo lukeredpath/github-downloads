@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{.}
+  s.name = %q{github-downloads}
   s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -9,13 +9,11 @@ Gem::Specification.new do |s|
   s.date = %q{2011-06-27}
   s.email = %q{luke@lukeredpath.co.uk}
   s.executables = [%q{github-downloads}]
-  s.extra_rdoc_files = [%q{README}]
-  s.files = [%q{Gemfile}, %q{Gemfile.lock}, %q{Rakefile}, %q{README}, %q{bin/github-downloads}, %q{spec/fixtures}, %q{spec/fixtures/textfile.txt}, %q{spec/github_client_spec.rb}, %q{spec/github_download_spec.rb}, %q{spec/spec_helper.rb}, %q{lib/github}, %q{lib/github/client.rb}, %q{lib/github/downloads.rb}, %q{lib/github/downloads_controller.rb}, %q{lib/github/s3_uploader.rb}, %q{lib/github.rb}]
-  s.homepage = %q{http://yoursite.example.com}
-  s.rdoc_options = [%q{--main}, %q{README}]
+  s.files = [%q{Gemfile}, %q{Gemfile.lock}, %q{Rakefile}, %q{README.md}, %q{bin/github-downloads}, %q{spec/fixtures/textfile.txt}, %q{spec/github_client_spec.rb}, %q{spec/github_download_spec.rb}, %q{spec/spec_helper.rb}, %q{lib/github/client.rb}, %q{lib/github/downloads.rb}, %q{lib/github/downloads_controller.rb}, %q{lib/github/s3_uploader.rb}, %q{lib/github.rb}]
+  s.homepage = %q{http://lukeredpath.co.uk}
   s.require_paths = [%q{lib}]
   s.rubygems_version = %q{1.8.5}
-  s.summary = %q{What this thing does}
+  s.summary = %q{Manages downloads for your Github projects}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3

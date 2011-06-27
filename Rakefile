@@ -11,6 +11,8 @@ task :default => :specs
 require "rubygems"
 require "rubygems/package_task"
 
+GEM_VERSION = "0.1.0"
+
 # This builds the actual gem. For details of what all these options
 # mean, and other ones you can add, check the documentation here:
 #
@@ -20,18 +22,18 @@ spec = Gem::Specification.new do |s|
 
   # Change these as appropriate
   s.name              = "github-downloads"
-  s.version           = "0.1.0"
+  s.version           = GEM_VERSION
   s.summary           = "Manages downloads for your Github projects"
   s.author            = "Luke Redpath"
   s.email             = "luke@lukeredpath.co.uk"
   s.homepage          = "http://lukeredpath.co.uk"
 
-  s.has_rdoc          = true
-  s.extra_rdoc_files  = %w(README)
-  s.rdoc_options      = %w(--main README)
+  s.has_rdoc          = false
+  # s.extra_rdoc_files  = %w(README)
+  # s.rdoc_options      = %w(--main README)
 
   # Add any extra files to include in the gem
-  s.files             = %w(Gemfile Gemfile.lock Rakefile README) + Dir.glob("{bin,spec,lib}/**/*")
+  s.files             = %w(Gemfile Gemfile.lock Rakefile README.md) + Dir.glob("{bin,spec,lib}/**/*")
   s.executables       = FileList["bin/**"].map { |f| File.basename(f) }
   s.require_paths     = ["lib"]
 
@@ -92,4 +94,9 @@ end
 desc 'Clear out RDoc and generated packages'
 task :clean => [:clobber_rdoc, :clobber_package] do
   rm "#{spec.name}.gemspec"
+end
+
+desc 'Publish gem'
+task :publish => :gem do
+  system "gem push pkg/#{spec.file_name}"
 end

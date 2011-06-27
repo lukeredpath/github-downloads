@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    . (0.1.0)
+    github-downloads (0.1.0)
       highline (~> 1.6.2)
       hirb (~> 0.4.5)
       json (~> 1.5.3)
@@ -48,8 +48,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  .!
   awesome_print
+  github-downloads!
   mimic
   mocha
   rspec
