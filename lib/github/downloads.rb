@@ -41,7 +41,8 @@ module Github
       response = @client.post(downloads_resource_path, {
         :name         => File.basename(file_path),
         :description  => description,
-        :content_type => MIME::Types.type_for(file_path)[0] || MIME::Types["application/octet-stream"][0]
+        :content_type => MIME::Types.type_for(file_path)[0] || MIME::Types["application/octet-stream"][0],
+        :size         => File.size?(file_path)
       })
       
       if response.success?

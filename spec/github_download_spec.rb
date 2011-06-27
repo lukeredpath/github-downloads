@@ -47,7 +47,8 @@ describe "Github::Downloads" do
       @client.expects(:post).with("/repos/username/somerepo/downloads", {
         :name         => "textfile.txt",
         :description  => "an example file",
-        :content_type => "text/plain"
+        :content_type => "text/plain",
+        :size         => File.size?("fixtures/textfile.txt")
       }).returns(unsuccessful_response)
       
       @downloads.upload("fixtures/textfile.txt", "an example file")
