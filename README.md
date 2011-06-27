@@ -2,6 +2,8 @@
 
 This is a simple gem that does exactly what it says on the tin: manages your Github project downloads.
 
+    $ gem install github-downloads
+
 It can be used to list the downloads for your project:
 
     $ github-downloads list -u lukeredpath -r simpleconfig
