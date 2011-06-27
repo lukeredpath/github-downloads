@@ -13,8 +13,14 @@ module Github
         ["Signature", metadata["signature"]],
         ["Content-Type", metadata["mime_type"]],
         ["file", File.open(path)]
-      ])
-    rescue
+      ]) do |response, request, result, &block|
+        if response.code == 303
+          # it worked, but don't follow the redirect
+          return metadata["url"]
+        else
+          response.return!
+        end
+      end
     end
   end
 end
