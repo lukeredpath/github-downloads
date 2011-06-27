@@ -60,10 +60,6 @@ module Github
       exit(status)
     end
     
-    def fetch_downloads(repo)
-       Hpricot(open("https://github.com/#{repo}/downloads"))
-    end
-    
     def set_proxy
       Github::Client.proxy = params[:proxy]
     end
