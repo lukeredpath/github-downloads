@@ -34,6 +34,13 @@ describe "Github::Downloads" do
       @client.stubs(:get).with("/repos/username/somerepo/downloads").returns unsuccessful_response
       proc { @downloads.list }.should raise_error(Github::Downloads::UnexpectedResponse)
     end
+    
+    it "stores the last response" do
+      expected_response = successful_response_with([])
+      @client.stubs(:get).with("/repos/username/somerepo/downloads").returns expected_response
+      @downloads.list
+      @downloads.last_response.should == expected_response
+    end
   end
   
   describe "#upload" do
@@ -70,6 +77,13 @@ describe "Github::Downloads" do
       @client.stubs(:post).returns unsuccessful_response
       @uploader.expects(:upload).never
       @downloads.create("fixtures/textfile.txt", "an example file").should be_false
+    end
+    
+    it "stores the last response" do
+      expected_response = successful_response_with([])
+      @client.stubs(:get).with("/repos/username/somerepo/downloads").returns expected_response
+      @downloads.list
+      @downloads.last_response.should == expected_response
     end
     
   end

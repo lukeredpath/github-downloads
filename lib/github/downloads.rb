@@ -5,6 +5,7 @@ require 'github/client'
 module Github
   class Downloads
     attr_accessor :uploader
+    attr_reader :last_response
     
     GITHUB_BASE_URL = "https://api.github.com"
     
@@ -12,6 +13,7 @@ module Github
       @client = client
       @user = user
       @repos = repos
+      @last_response = nil
     end
     
     def self.connect(user, password, repos)
@@ -28,25 +30,25 @@ module Github
     end
     
     def list
-      response = @client.get(downloads_resource_path)
+      @last_response = @client.get(downloads_resource_path)
       
-      if response.success?
-        from_response_data(response.data)
+      if @last_response.success?
+        from_response_data(@last_response.data)
       else
-        raise UnexpectedResponse, response
+        raise UnexpectedResponse, @last_response
       end
     end
     
     def create(file_path, description = "")
-      response = @client.post(downloads_resource_path, {
+      @last_response = @client.post(downloads_resource_path, {
         :name         => File.basename(file_path),
         :description  => description,
         :content_type => MIME::Types.type_for(file_path)[0] || MIME::Types["application/octet-stream"][0],
         :size         => File.size?(file_path)
       })
       
-      if response.success?
-        uploader.upload(File.expand_path(file_path), response.data)
+      if @last_response.success?
+        uploader.upload(File.expand_path(file_path), @last_response.data)
       end
     end
     
