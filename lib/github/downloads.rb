@@ -1,6 +1,7 @@
 require 'ostruct'
 require 'mime/types'
 require 'github/client'
+require 'github/s3_uploader'
 
 module Github
   class Downloads
@@ -18,7 +19,9 @@ module Github
     
     def self.connect(user, password, repos)
       client = Client.connect(GITHUB_BASE_URL, user, password)
-      new(client, user, repos)
+      new(client, user, repos).tap do |downloader|
+        downloader.uploader = Github::S3Uploader.new # default uploader
+      end
     end
     
     class UnexpectedResponse < StandardError

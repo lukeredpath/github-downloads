@@ -73,9 +73,7 @@ module Github
         password = lookup_or_prompt_for_password(params[:user])
       end
       
-      @github ||= Github::Downloads.connect(params[:user], password, params[:repos]).tap do |gh|
-        gh.uploader = Github::S3Uploader.new
-      end
+      @github ||= Github::Downloads.connect(params[:user], password, params[:repos])
     end
     
     def lookup_or_prompt_for_password(user)
