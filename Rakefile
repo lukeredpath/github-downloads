@@ -46,12 +46,12 @@ spec = Gem::Specification.new do |s|
   gem "mime-types"
   gem "highline"
   
-  s.add_dependency("rest-client", "~> 1.6.3")
-  s.add_dependency("json", "~> 1.5.3")
-  s.add_dependency("simpleconsole", "~> 0.1.1")
-  s.add_dependency("hirb", "~> 0.4.5")
-  s.add_dependency("mime-types", "~> 1.16.0")
-  s.add_dependency("highline", "~> 1.6.2")
+  s.add_dependency("rest-client")
+  s.add_dependency("json")
+  s.add_dependency("simpleconsole")
+  s.add_dependency("hirb")
+  s.add_dependency("mime-types")
+  s.add_dependency("highline")
 
   # If your tests use any gems, include them here
   s.add_development_dependency("rspec")
@@ -75,6 +75,11 @@ desc "Build the gemspec file #{spec.name}.gemspec"
 task :gemspec do
   file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
   File.open(file, "w") {|f| f << spec.to_ruby }
+end
+
+desc "Run bundler"
+task :bundle => :gemspec do
+  system "bundle"
 end
 
 # If you don't want to generate the .gemspec file, just remove this line. Reasons

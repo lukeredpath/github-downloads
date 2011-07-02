@@ -1,13 +1,13 @@
 PATH
   remote: .
   specs:
-    github-downloads (0.1.0)
-      highline (~> 1.6.2)
-      hirb (~> 0.4.5)
-      json (~> 1.5.3)
-      mime-types (~> 1.16.0)
-      rest-client (~> 1.6.3)
-      simpleconsole (~> 0.1.1)
+    github-downloads (0.1.1)
+      highline
+      hirb
+      json
+      mime-types
+      rest-client
+      simpleconsole
 
 GEM
   remote: http://rubygems.org/
