@@ -88,6 +88,13 @@ describe "Github::Downloads" do
       @downloads.last_response.should == expected_response
     end
     
+    it "attempts to delete the file first if :overwrite is specified" do
+      @downloads.expects(:delete).with(:name => "textfile.txt")
+      @client.stubs(:post).returns successful_response_with("upload data")
+      @uploader.stubs(:upload).returns true
+      @downloads.create("fixtures/textfile.txt", "an example file", :overwrite => true)
+    end
+    
   end
   
   describe "#delete" do

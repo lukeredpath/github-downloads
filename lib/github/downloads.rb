@@ -42,7 +42,9 @@ module Github
       end
     end
 
-    def create(file_path, description = "")
+    def create(file_path, description = "", options={})
+      delete(:name => File.basename(file_path)) if options[:overwrite]
+      
       @last_response = @client.post(downloads_resource_path, {
         :name         => File.basename(file_path),
         :description  => description,
