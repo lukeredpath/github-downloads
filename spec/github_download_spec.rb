@@ -19,7 +19,7 @@ describe "Github::Downloads" do
         {
           "url" => "https://api.github.com/repos/octocat/Hello-World/downloads/1",
           "html_url" => "https://github.com/repos/octocat/Hello-World/downloads/filename",
-          "id" => 1,
+          "id" => 123,
           "name" => "file.zip",
           "description" => "The latest release",
           "size" => 1024,
@@ -28,6 +28,7 @@ describe "Github::Downloads" do
       ])
       @downloads.list.size.should == 1
       @downloads.list.first.description.should == "The latest release"
+      @downloads.list.first.download_id.should == 123
     end
     
     it "raises if the response is not successful" do
@@ -80,10 +81,47 @@ describe "Github::Downloads" do
     end
     
     it "stores the last response" do
-      expected_response = successful_response_with([])
-      @client.stubs(:get).with("/repos/username/somerepo/downloads").returns expected_response
-      @downloads.list
+      expected_response = successful_response_with("upload data")
+      @client.stubs(:post).returns expected_response
+      @uploader.stubs(:upload).returns true
+      @downloads.create("fixtures/textfile.txt", "an example file")
       @downloads.last_response.should == expected_response
+    end
+    
+  end
+  
+  describe "#delete" do
+    
+    it "sends a DELETE request to the download's resource when provided with an ID" do
+      @client.expects(:delete).with("/repos/username/somerepo/downloads/123").returns(successful_response_with([]))
+      @downloads.delete(:id => 123)
+    end
+    
+    it "looks up the ID of the download before deletion when provided with a name" do
+      @client.stubs(:get).with("/repos/username/somerepo/downloads").returns successful_response_with([
+        {"id" => 1, "name" => "file.zip"},
+        {"id" => 2, "name" => "other_file.zip"},
+        {"id" => 3, "name" => "some_file.txt"},
+        {"id" => 4, "name" => "file.mp3"}
+      ])
+      @client.expects(:delete).with("/repos/username/somerepo/downloads/3").returns(successful_response_with([]))
+      @downloads.delete(:name => "some_file.txt")
+    end
+    
+    it "returns true for a successful deletion" do
+      @client.stubs(:delete).with("/repos/username/somerepo/downloads/123").returns(successful_response_with([]))
+      @downloads.delete(:id => 123).should be_true
+    end
+    
+    it "stores the last response" do
+      expected_response = successful_response_with([])
+      @client.stubs(:delete).with("/repos/username/somerepo/downloads/123").returns expected_response
+      @downloads.delete(:id => 123)
+      @downloads.last_response.should == expected_response
+    end
+    
+    it "raises if :name or :id is not provided" do
+      proc{ @downloads.delete }.should raise_error
     end
     
   end
