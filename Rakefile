@@ -11,7 +11,7 @@ task :default => :specs
 require "rubygems"
 require "rubygems/package_task"
 
-GEM_VERSION = "0.1.2"
+GEM_VERSION = "0.1.3"
 
 # This builds the actual gem. For details of what all these options
 # mean, and other ones you can add, check the documentation here:

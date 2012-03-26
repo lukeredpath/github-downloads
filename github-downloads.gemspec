@@ -1,19 +1,19 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{github-downloads}
-  s.version = "0.1.1"
+  s.name = "github-downloads"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Luke Redpath}]
-  s.date = %q{2011-07-02}
-  s.email = %q{luke@lukeredpath.co.uk}
-  s.executables = [%q{github-downloads}]
-  s.files = [%q{Gemfile}, %q{Gemfile.lock}, %q{Rakefile}, %q{README.md}, %q{bin/github-downloads}, %q{spec/fixtures}, %q{spec/fixtures/textfile.txt}, %q{spec/github_client_spec.rb}, %q{spec/github_download_spec.rb}, %q{spec/spec_helper.rb}, %q{lib/github}, %q{lib/github/client.rb}, %q{lib/github/downloads.rb}, %q{lib/github/downloads_controller.rb}, %q{lib/github/s3_uploader.rb}, %q{lib/github.rb}]
-  s.homepage = %q{http://lukeredpath.co.uk}
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
-  s.summary = %q{Manages downloads for your Github projects}
+  s.authors = ["Luke Redpath"]
+  s.date = "2012-03-26"
+  s.email = "luke@lukeredpath.co.uk"
+  s.executables = ["github-downloads"]
+  s.files = ["Gemfile", "Gemfile.lock", "Rakefile", "README.md", "bin/github-downloads", "spec/fixtures", "spec/fixtures/textfile.txt", "spec/github_client_spec.rb", "spec/github_download_spec.rb", "spec/spec_helper.rb", "lib/github", "lib/github/client.rb", "lib/github/downloads.rb", "lib/github/downloads_controller.rb", "lib/github/s3_uploader.rb", "lib/github.rb"]
+  s.homepage = "http://lukeredpath.co.uk"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.11"
+  s.summary = "Manages downloads for your Github projects"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
