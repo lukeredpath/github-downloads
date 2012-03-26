@@ -4,7 +4,7 @@ module Github
   class S3Uploader 
     def upload(path, metadata)
       response = RestClient.post(metadata["s3_url"], [
-        ["key", "#{metadata["prefix"]}#{metadata["name"]}"],
+        ["key", "#{metadata["path"]}"],
         ["acl", metadata["acl"]],
         ["success_action_status", 201],
         ["Filename", metadata["name"]],
